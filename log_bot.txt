@@ -1,0 +1,1 @@
+['Chat_id:333458537', "Message:{u'date': 1574774575, u'text': u'q', u'from': {u'username': u'Arien01', u'first_name': u'Christian', u'is_bot': False, u'id': 333458537, u'language_code': u'en'}, u'message_id': 321, u'chat': {u'username': u'Arien01', u'first_name': u'Christian', u'type': u'private', u'id': 333458537}}"]
