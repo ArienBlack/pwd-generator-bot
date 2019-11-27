@@ -3,6 +3,7 @@
 import telepot
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardRemove
+from pprint import pprint
 
 import time
 import datetime
@@ -12,56 +13,49 @@ token_bot = '1006213300:AAF2FS_AXRJCLHWnZf1pI1TzuDxlRqJc2O4'
 
 bot = telepot.Bot(token_bot)
 
-def pwd_lenght_set(chat_id):
-    pwd_length = 0
-    
-    set_pwd_keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [
-            InlineKeyboardButton(text='Incrementa', callback_data='increment')
-        ]
-    ])
-
-    bot.sendMessage(chat_id, 'La lunghezza della tua password è: {pwd_length}', reply_markup=set_pwd_keyboard)
-
-def increase():
-    pass
-
 def options_menu(chat_id):
     markup = ReplyKeyboardRemove()
 
     keyboard_option = InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text='Imposta la lunghezza della password', callback_data='pwd_set_lenght'),
             InlineKeyboardButton(text='Informazioni', callback_data='help')
         ]
     ])
 
     bot.sendMessage(chat_id, 'Impostazioni', reply_markup=keyboard_option)
 
-def create_password(chat_id):
+def create_password(chat_id, msg):
+    bot.sendMessage(chat_id, "quanto vuoi che sia lunga la password?")
+
+    telepot.glance(msg)
+
+    while True:
+        pwd_lenght = msg['text']
+
+        if pwd_lenght > '4':
+            bot.sendMessage(chat_id, 'La lunghezza minima della password deve essere di 4 caratteri')
+            break
+        else:
+            continue
+
+    print(pwd_lenght)
+
     bot.sendMessage(chat_id, "Sono ancora in fase di sviluppo")
+
 
 def client_log(chat_id, msg):
     #Date = "Date:", datetime.datetime.today()
     #Time = "Time:", datetime.datetime.now()
 
-    format_log = [
-        #str(Date),
-        #str(Time),
-        "Chat_id:" + str(chat_id),
-        "Message:" + str(msg),
-        ]
+    format_log = msg['date']['chat_id']['username']['text']
 
     time.sleep(5)
     
     log = open("log_bot.txt", "w+")
+        
+    log.write(str(format_log))
 
-    for x in format_log: 
-        log.write(str(format_log))
-
-        log.close()
-
-    #print(chat_id, msg)
+    log.close()
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -79,13 +73,9 @@ def on_callback_query(msg):
     query_id, chat_id, query_data, = telepot.glance(msg, flavor='callback_query')
 
     if query_data == 'pwdgen':
-        create_password(chat_id)
+        create_password(chat_id, msg)
     elif query_data == 'options_menu':
         options_menu(chat_id)
-    elif query_data == 'pwd_set_lenght':
-        pwd_lenght_set(chat_id)
-    elif query_data == 'increment':
-        increase()
 
 print ('Listening ...')
 
