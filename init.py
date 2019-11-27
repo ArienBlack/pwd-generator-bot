@@ -25,20 +25,10 @@ def options_menu(chat_id):
     bot.sendMessage(chat_id, 'Impostazioni', reply_markup=keyboard_option)
 
 def create_password(chat_id, msg):
+
     bot.sendMessage(chat_id, "quanto vuoi che sia lunga la password?")
 
-    telepot.glance(msg)
-
-    while True:
-        pwd_lenght = msg['text']
-
-        if pwd_lenght > '4':
-            bot.sendMessage(chat_id, 'La lunghezza minima della password deve essere di 4 caratteri')
-            break
-        else:
-            continue
-
-    print(pwd_lenght)
+    print('test')
 
     bot.sendMessage(chat_id, "Sono ancora in fase di sviluppo")
 
@@ -57,6 +47,9 @@ def client_log(chat_id, msg):
 
     log.close()
 
+def help():
+    pass
+
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
 
@@ -67,7 +60,7 @@ def on_chat_message(msg):
 
     bot.sendMessage(chat_id, 'Benvenuto su pwd generator', reply_markup=keyboard)
 
-    client_log(chat_id, msg)
+    #client_log(chat_id, msg)
 
 def on_callback_query(msg):
     query_id, chat_id, query_data, = telepot.glance(msg, flavor='callback_query')
@@ -76,6 +69,8 @@ def on_callback_query(msg):
         create_password(chat_id, msg)
     elif query_data == 'options_menu':
         options_menu(chat_id)
+    elif query_data == 'help':
+        help()
 
 print ('Listening ...')
 
