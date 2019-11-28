@@ -8,6 +8,8 @@ from pprint import pprint
 import time
 import datetime
 import sys
+import logging
+import emoji
 
 token_bot = '1006213300:AAF2FS_AXRJCLHWnZf1pI1TzuDxlRqJc2O4'
 
@@ -18,7 +20,7 @@ def options_menu(chat_id):
 
     keyboard_option = InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text='Informazioni', callback_data='help')
+            InlineKeyboardButton(text=emoji.emojize(':page_facing_up: Informazioni', use_aliases=True), callback_data='help')
         ]
     ])
 
@@ -26,41 +28,32 @@ def options_menu(chat_id):
 
 def create_password(chat_id, msg):
 
-    bot.sendMessage(chat_id, "quanto vuoi che sia lunga la password?")
-
-    print('test')
-
-    bot.sendMessage(chat_id, "Sono ancora in fase di sviluppo")
+    bot.sendMessage(chat_id, "Ehy ricordati che sono ancora in fase di sviluppo")
 
 
 def client_log(chat_id, msg):
-    #Date = "Date:", datetime.datetime.today()
-    #Time = "Time:", datetime.datetime.now()
+    message = msg['text']
 
-    format_log = msg['date']['chat_id']['username']['text']
+    logging.basicConfig(filename="bot_log.txt", level=logging.DEBUG, format='["%(asctime)s", %(message)s]')
 
-    time.sleep(5)
-    
-    log = open("log_bot.txt", "w+")
-        
-    log.write(str(format_log))
+    logging.info(f'Chat_id: {chat_id}, Message: {message}')
 
-    log.close()
-
-def help():
-    pass
+def help(chat_id):
+    bot.sendMessage(chat_id, """Autore: Arien01, 
+    Privacy: Il bot genera in maniera autonoma e diversa da ogni altra le chiavi donate all'utente. All'interno del bot non vi è alcuna funzione per il salvataggio delle password.
+    """)
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text='Crea la tua password', callback_data='pwdgen'),
-        InlineKeyboardButton(text='Impostazioni', callback_data='options_menu')]
+        [InlineKeyboardButton(text=emoji.emojize(':key: Genera password', use_aliases=True), callback_data='pwdgen'),
+        InlineKeyboardButton(text=emoji.emojize(':wrench: Impostazioni', use_aliases=True), callback_data='options_menu')]
         ])
 
     bot.sendMessage(chat_id, 'Benvenuto su pwd generator', reply_markup=keyboard)
 
-    #client_log(chat_id, msg)
+    client_log(chat_id, msg)
 
 def on_callback_query(msg):
     query_id, chat_id, query_data, = telepot.glance(msg, flavor='callback_query')
@@ -70,7 +63,7 @@ def on_callback_query(msg):
     elif query_data == 'options_menu':
         options_menu(chat_id)
     elif query_data == 'help':
-        help()
+        help(chat_id)
 
 print ('Listening ...')
 
