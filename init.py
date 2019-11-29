@@ -10,6 +10,7 @@ import datetime
 import sys
 import logging
 import emoji
+import random
 
 token_bot = '1006213300:AAF2FS_AXRJCLHWnZf1pI1TzuDxlRqJc2O4'
 
@@ -28,8 +29,25 @@ def options_menu(chat_id):
 
 def create_password(chat_id, msg):
 
-    bot.sendMessage(chat_id, "Ehy ricordati che sono ancora in fase di sviluppo")
+    d = datetime.date.today()
+    current_date = d.strftime("%d-%m-%Y")
 
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S", t)
+
+    charset = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()?"
+
+    time.sleep(1)
+
+    pwd_generated = ''.join(random.choice(charset) for x in range(12))
+
+    print(pwd_generated)
+
+    bot.sendMessage(chat_id, pwd_generated)
+
+    bot.sendMessage(chat_id, f"Password generata il {current_date}, alle {current_time}")
+
+    bot.sendMessage(chat_id, "Ehy ricordati che sono ancora in fase di sviluppo")
 
 def client_log(chat_id, msg):
     message = msg['text']
