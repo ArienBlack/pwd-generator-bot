@@ -17,7 +17,7 @@ token_bot = '1006213300:AAF2FS_AXRJCLHWnZf1pI1TzuDxlRqJc2O4'
 bot = telepot.Bot(token_bot)
 
 def options_menu(chat_id):
-    markup = ReplyKeyboardRemove()
+    time.sleep(1)
 
     keyboard_option = InlineKeyboardMarkup(inline_keyboard=[
         [
@@ -28,6 +28,7 @@ def options_menu(chat_id):
     bot.sendMessage(chat_id, 'Impostazioni', reply_markup=keyboard_option)
 
 def create_password(chat_id, msg):
+    time.sleep(1)
 
     d = datetime.date.today()
     current_date = d.strftime("%d-%m-%Y")
@@ -36,8 +37,6 @@ def create_password(chat_id, msg):
     current_time = time.strftime("%H:%M:%S", t)
 
     charset = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()?"
-
-    time.sleep(1)
 
     pwd_generated = ''.join(random.choice(charset) for x in range(12))
 
@@ -63,6 +62,8 @@ def help(chat_id):
 
 def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
+
+    time.sleep(1)
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=emoji.emojize(':key: Genera password', use_aliases=True), callback_data='pwdgen'),
