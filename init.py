@@ -12,7 +12,7 @@ import logging
 import emoji
 import random
 
-token_bot = '1006213300:AAF2FS_AXRJCLHWnZf1pI1TzuDxlRqJc2O4'
+token_bot = ''
 
 bot = telepot.Bot(token_bot)
 
